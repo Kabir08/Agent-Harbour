@@ -354,8 +354,6 @@ export function writeCodexMcpConfigToml(servers: Record<string, CodexMcpServer>)
   log(`Wrote MCP config.toml (${Object.keys(servers).length} server(s))`);
 }
 
-export function createCodexConfigOverrides(baseUrl?: string | null): string[] {
-  const overrides = ['features.use_linux_sandbox_bwrap=false'];
-  if (baseUrl) overrides.push(`model_provider_base_url="${baseUrl}"`);
-  return overrides;
+export function createCodexConfigOverrides(): string[] {
+  return ['features.use_linux_sandbox_bwrap=false'];
 }
