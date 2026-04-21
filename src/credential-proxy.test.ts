@@ -192,12 +192,10 @@ describe('credential-proxy', () => {
   });
 
   it('supports MODEL_BASE_URL and bearer auth translation', async () => {
-    proxyPort = await startProxyWithCustomBaseUrl(
-      {
-        MODEL_AUTH_SCHEME: 'bearer',
-        MODEL_AUTH_TOKEN: 'bearer-model-token',
-      },
-    );
+    proxyPort = await startProxyWithCustomBaseUrl({
+      MODEL_AUTH_SCHEME: 'bearer',
+      MODEL_AUTH_TOKEN: 'bearer-model-token',
+    });
 
     await makeRequest(
       proxyPort,

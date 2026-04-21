@@ -24,11 +24,13 @@ describe('model-backend', () => {
     expect(settings.provider).toBe('llama.cpp');
     expect(settings.modelName).toBe('llama3.1');
     expect(settings.upstreamUrl.toString()).toBe('http://127.0.0.1:8080/');
-    expect(detectContainerAuthMode({
-      MODEL_PROVIDER: 'llama.cpp',
-      MODEL_BASE_URL: 'http://127.0.0.1:8080',
-      MODEL_NAME: 'llama3.1',
-    })).toBe('api-key');
+    expect(
+      detectContainerAuthMode({
+        MODEL_PROVIDER: 'llama.cpp',
+        MODEL_BASE_URL: 'http://127.0.0.1:8080',
+        MODEL_NAME: 'llama3.1',
+      }),
+    ).toBe('api-key');
   });
 
   it('falls back to oauth mode when only Claude OAuth credentials are present', () => {

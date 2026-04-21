@@ -60,7 +60,10 @@ function toText(value: unknown): string {
     return String(value);
   }
   if (Array.isArray(value)) {
-    return value.map((entry) => toText(entry)).filter(Boolean).join('\n');
+    return value
+      .map((entry) => toText(entry))
+      .filter(Boolean)
+      .join('\n');
   }
   if (isRecord(value)) {
     if (typeof value.text === 'string') return value.text;
@@ -85,7 +88,11 @@ function normalizeToolChoice(choice: unknown): unknown {
       return 'required';
     }
   }
-  if (isRecord(choice) && choice.type === 'tool' && typeof choice.name === 'string') {
+  if (
+    isRecord(choice) &&
+    choice.type === 'tool' &&
+    typeof choice.name === 'string'
+  ) {
     return {
       type: 'function',
       function: { name: choice.name },
@@ -94,7 +101,9 @@ function normalizeToolChoice(choice: unknown): unknown {
   return undefined;
 }
 
-function translateTools(tools: AnthropicRequestBody['tools']): unknown[] | undefined {
+function translateTools(
+  tools: AnthropicRequestBody['tools'],
+): unknown[] | undefined {
   if (!Array.isArray(tools) || tools.length === 0) return undefined;
 
   return tools
@@ -108,7 +117,8 @@ function translateTools(tools: AnthropicRequestBody['tools']): unknown[] | undef
           description:
             typeof tool.description === 'string' ? tool.description : undefined,
           parameters:
-            isRecord(tool.input_schema) && Object.keys(tool.input_schema).length > 0
+            isRecord(tool.input_schema) &&
+            Object.keys(tool.input_schema).length > 0
               ? tool.input_schema
               : { type: 'object', properties: {} },
         },
@@ -117,9 +127,7 @@ function translateTools(tools: AnthropicRequestBody['tools']): unknown[] | undef
     .filter(Boolean);
 }
 
-function translateMessage(
-  message: Record<string, unknown>,
-): OpenAIMessage[] {
+function translateMessage(message: Record<string, unknown>): OpenAIMessage[] {
   const role = message.role;
   const content = message.content;
 
@@ -264,14 +272,16 @@ function synthesizeAnthropicResponse(
 ): string {
   const choice = response.choices?.[0];
   const message = choice?.message;
-  const model = response.model || settings.modelName || body.model || 'llama.cpp';
+  const model =
+    response.model || settings.modelName || body.model || 'llama.cpp';
   const messageId = response.id || `msg_${Date.now()}`;
   const promptTokens = response.usage?.prompt_tokens || 0;
   const completionTokens = response.usage?.completion_tokens || 0;
 
   const contentBlocks: Array<Record<string, unknown>> = [];
 
-  const text = typeof message?.content === 'string' ? message.content : undefined;
+  const text =
+    typeof message?.content === 'string' ? message.content : undefined;
   if (text) {
     contentBlocks.push({ type: 'text', text });
   }
@@ -381,7 +391,10 @@ export async function handleLlamaCppAnthropicRequest(
   try {
     parsedBody = JSON.parse(body.toString('utf-8')) as AnthropicRequestBody;
   } catch (err) {
-    logger.warn({ err, url: req.url }, 'Failed to parse llama.cpp request body');
+    logger.warn(
+      { err, url: req.url },
+      'Failed to parse llama.cpp request body',
+    );
     res.writeHead(400, { 'content-type': 'application/json' });
     res.end(JSON.stringify({ error: 'Invalid JSON body' }));
     return true;
@@ -416,7 +429,8 @@ export async function handleLlamaCppAnthropicRequest(
     );
 
     res.writeHead(upstreamResponse.status, {
-      'content-type': upstreamResponse.headers.get('content-type') || 'text/plain',
+      'content-type':
+        upstreamResponse.headers.get('content-type') || 'text/plain',
     });
     res.end(errorText);
     return true;

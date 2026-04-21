@@ -40,7 +40,9 @@ export function readModelBackendEnv(): Record<string, string> {
   return readEnvFile(MODEL_ENV_KEYS);
 }
 
-function firstDefined(...values: Array<string | undefined>): string | undefined {
+function firstDefined(
+  ...values: Array<string | undefined>
+): string | undefined {
   for (const value of values) {
     if (value) return value;
   }
@@ -79,12 +81,19 @@ export function resolveModelBackendSettings(
   );
 
   const upstreamUrl = new URL(
-    firstDefined(env.ANTHROPIC_BASE_URL, env.MODEL_BASE_URL, env.LLM_BASE_URL) ||
-      'https://api.anthropic.com',
+    firstDefined(
+      env.ANTHROPIC_BASE_URL,
+      env.MODEL_BASE_URL,
+      env.LLM_BASE_URL,
+    ) || 'https://api.anthropic.com',
   );
 
   const authScheme = normalizeAuthScheme(
-    firstDefined(env.MODEL_AUTH_SCHEME, env.LLM_AUTH_SCHEME, env.ANTHROPIC_AUTH_SCHEME),
+    firstDefined(
+      env.MODEL_AUTH_SCHEME,
+      env.LLM_AUTH_SCHEME,
+      env.ANTHROPIC_AUTH_SCHEME,
+    ),
   );
 
   const modelName = firstDefined(
