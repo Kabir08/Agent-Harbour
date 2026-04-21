@@ -1,6 +1,6 @@
 # Agent Harbor
 
-Personal Claude assistant. Agent Harbor is a fork of NanoClaw. See [README.md](README.md) for philosophy and setup. See [docs/REQUIREMENTS.md](docs/REQUIREMENTS.md) for architecture decisions.
+Personal Claude assistant. Agent Harbor is a fork of NanoClaw built for secure containers and flexible model backends, including local llama.cpp and hosted APIs like Groq. See [README.md](README.md) for philosophy and setup. See [docs/REQUIREMENTS.md](docs/REQUIREMENTS.md) for architecture decisions.
 
 ## Quick Context
 

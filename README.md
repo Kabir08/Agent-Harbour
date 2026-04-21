@@ -3,7 +3,7 @@
 </p>
 
 <p align="center">
-  Agent Harbor is a fork of NanoClaw by qwibitai and contributors. It runs agents securely in their own containers and stays lightweight, understandable, and completely customizable.
+  Agent Harbor is a fork of NanoClaw by qwibitai and contributors. It keeps the secure container model while making room for local llama.cpp backends and hosted provider APIs like Groq, so the assistant can run where your models already live.
 </p>
 
 <p align="center">
@@ -37,7 +37,7 @@
 
 [OpenClaw](https://github.com/openclaw/openclaw) is an impressive project, but I wouldn't have been able to sleep if I had given complex software I didn't understand full access to my life. OpenClaw has nearly half a million lines of code, 53 config files, and 70+ dependencies. Its security is at the application level (allowlists, pairing codes) rather than true OS-level isolation. Everything runs in one Node process with shared memory.
 
-Agent Harbor provides that same core functionality, but in a codebase small enough to understand: one process and a handful of files. Claude agents run in their own Linux containers with filesystem isolation, not merely behind permission checks.
+Agent Harbor provides that same core functionality, but in a codebase small enough to understand: one process and a handful of files. It keeps NanoClaw's container isolation, then broadens the model story so you can use local llama.cpp servers or hosted APIs like Groq without exposing secrets to containers.
 
 ## Quick Start
 
@@ -78,7 +78,7 @@ Then run `/setup`. Claude Code handles everything: dependencies, authentication,
 
 **Skills over features.** Instead of adding features (e.g. support for Telegram) to the codebase, contributors submit [claude code skills](https://code.claude.com/docs/en/skills) like `/add-telegram` that transform your fork. You end up with clean code that does exactly what you need.
 
-**Best harness, best model.** Agent Harbor runs on the Claude Agent SDK, which means you're running Claude Code directly. Claude Code is highly capable and its coding and problem-solving capabilities allow it to modify and expand Agent Harbor and tailor it to each user.
+**Best harness, flexible model backends.** Agent Harbor runs on the Claude Agent SDK, which means you're running Claude Code directly. Claude Code is highly capable and its coding and problem-solving capabilities allow it to modify and expand Agent Harbor while still letting you point the backend at local llama.cpp or hosted provider APIs.
 
 ## What It Supports
 
@@ -88,6 +88,7 @@ Then run `/setup`. Claude Code handles everything: dependencies, authentication,
 - **Scheduled tasks** - Recurring jobs that run Claude and can message you back
 - **Web access** - Search and fetch content from the Web
 - **Container isolation** - Agents are sandboxed in Docker (macOS/Linux), [Docker Sandboxes](docs/docker-sandboxes.md) (micro VM isolation), or Apple Container (macOS)
+- **Model backend flexibility** - Use local llama.cpp or hosted provider APIs like Groq through compatibility layers and proxying, while keeping secrets out of containers
 - **Credential security** - Agents never hold raw API keys. Outbound requests route through [OneCLI's Agent Vault](https://github.com/onecli/onecli), which injects credentials at request time and enforces per-agent policies and rate limits.
 - **Agent Swarms** - Spin up teams of specialized agents that collaborate on complex tasks
 - **Optional integrations** - Add Gmail (`/add-gmail`) and more via skills
